@@ -3,12 +3,12 @@
 NULL
 
 inst_path <- function() {
-  if (is.null(pkgload::dev_meta("pkgdown"))) {
-    # pkgdown is probably installed
-    system.file(package = "pkgdown")
+  if (is.null(pkgload::dev_meta("packagePages"))) {
+    # packagePages is probably installed
+    system.file(package = "packagePages")
   } else {
-    # pkgdown was probably loaded with devtools
-    file.path(getNamespaceInfo("pkgdown", "path"), "inst")
+    # packagePages was probably loaded with devtools
+    file.path(getNamespaceInfo("packagePages", "path"), "inst")
   }
 }
 
@@ -209,7 +209,7 @@ package_path <- function(package, path) {
     stop(package, " is not installed", call. = FALSE)
   }
 
-  pkg_path <- system.file("pkgdown", path, package = package)
+  pkg_path <- system.file("packagePages", path, package = package)
   if (pkg_path == "") {
     stop(package, " does not contain 'inst/pkgdown/", path, "'", call. = FALSE)
   }
@@ -232,7 +232,7 @@ out_of_date <- function(source, target) {
 #' Determine if code is executed by pkgdown
 #'
 #' This is occassionally useful when you need different behaviour by
-#' pkgdown and regular documentation.
+#' packagePages and regular documentation.
 #'
 #' @export
 #' @examples
