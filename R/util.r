@@ -211,7 +211,7 @@ package_path <- function(package, path) {
 
   pkg_path <- system.file("packagePages", path, package = package)
   if (pkg_path == "") {
-    stop(package, " does not contain 'inst/pkgdown/", path, "'", call. = FALSE)
+    stop(package, " does not contain 'inst/packagePages/", path, "'", call. = FALSE)
   }
 
   pkg_path
