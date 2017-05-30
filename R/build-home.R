@@ -161,9 +161,9 @@ data_home_sidebar <- function(pkg = ".") {
     return(pkg$meta$home$sidebar)
 
   paste0(
-    data_home_sidebar_links(pkg),
-    data_home_sidebar_license(pkg),
     data_home_sidebar_authors(pkg),
+    data_home_sidebar_license(pkg),
+    data_home_sidebar_links(pkg),
     collapse = "\n"
   )
 }

@@ -34,12 +34,13 @@ data_author_info <- function(pkg = ".") {
   pkg <- as_pkgdown(pkg)
 
   defaults <- list(
-    "Hadley Wickham" = list(
-      href = "http://hadley.nz"
+    "Damian W Betebenner" = list(
+      href = "https://github.com/dbetebenner",
+      html = "<img src='/img/dbetebenner.png' height='24' />"
     ),
-    "RStudio" = list(
-      href = "https://www.rstudio.com",
-      html = "<img src='http://tidyverse.org/rstudio-logo.svg' height='24' />"
+    "Adam R Van Iwaarden" = list(
+      href = "https://github.com/adamvi",
+      html = "<img src='/img/adamvi.png' height='24' />"
     )
   )
 
