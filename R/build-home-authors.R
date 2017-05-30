@@ -1,6 +1,16 @@
 data_authors <- function(pkg = ".") {
+
+  augment_name <- function(name_list, author_names) {
+      if (grepl("href", name_list[['name']])) {
+          name_list[['name']] <- gsub("/></", paste0("/>", " ", paste(author_names[['given']], collapse=" "), " ", author_names[['family']], "</"), name_list[['name']])
+      }
+      name_list
+  }
+
   pkg <- as_pkgdown(pkg)
   author_info <- data_author_info(pkg)
+  author_names_all <- pkg %>% pkg_authors()
+  author_names_main <- pkg %>% pkg_authors(c("aut", "cre", "fnd"))
 
   all <- pkg %>%
     pkg_authors() %>%
@@ -9,6 +19,14 @@ data_authors <- function(pkg = ".") {
   main <- pkg %>%
     pkg_authors(c("aut", "cre", "fnd")) %>%
     purrr::map(author_list, author_info)
+
+  for (i in seq_along(all)) {
+    all[[i]] <- augment_name(all[[i]], author_names_all[[i]])
+  }
+
+  for (i in seq_along(main)) {
+    main[[i]] <- augment_name(main[[i]], author_names_main[[i]])
+  }
 
   needs_page <- length(main) != length(all)
 
