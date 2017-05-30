@@ -1,2 +1,3 @@
 # packagePages
-Customized pkgdown clone to create GitHub pages for R packages
+
+Customized [pkgdown](https://github.com/hadley/pkgdown) clone to create GitHub pages for R packages & projects.
