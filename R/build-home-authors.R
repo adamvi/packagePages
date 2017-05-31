@@ -54,11 +54,11 @@ data_author_info <- function(pkg = ".") {
   defaults <- list(
     "Damian W. Betebenner" = list(
       href = "https://github.com/dbetebenner",
-      html = "<img src='img/dbetebenner.png' height='24' />"
+      html = "<img src='img/dbetebenner.png' height='20' />"
     ),
     "Adam R. Van Iwaarden" = list(
       href = "https://github.com/adamvi",
-      html = "<img src='img/adamvi.png' height='24' />"
+      html = "<img src='img/adamvi.png' height='20' />"
     )
   )
 
