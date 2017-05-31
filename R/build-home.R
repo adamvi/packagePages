@@ -272,5 +272,5 @@ on_cran <- function(pkg, cran = cran_mirror()) {
 
 link_url <- function(text, href) {
   label <- gsub("(/+)", "\\1&#8203;", href)
-  paste0(text, " at <br /><a href='", href, "'>", label, "</a>")
+  paste0("<a href='", href, "'>", text, "</a>")
 }
