@@ -51,12 +51,17 @@ render_page <- function(pkg = ".", name, data, path = "", depth = 0L) {
 #' @export
 #' @rdname render_page
 data_template <- function(pkg = ".", depth = 0L) {
+
+  strReverse <- function(x) sapply(lapply(strsplit(x, NULL), rev), paste, collapse="")
+  
   pkg <- as_pkgdown(pkg)
   desc <- pkg$desc
   name <- desc$get("Package")[[1]]
   authors <- data_authors(pkg)$main %>%
     purrr::map_chr("name") %>%
     paste(collapse = ", ")
+
+  authors <- strReverse(sub('< ,>', '< & >', strReverse(authors)))
 
   # Force inclusion so you can reliably refer to objects inside yaml
   # in the moustache templates
