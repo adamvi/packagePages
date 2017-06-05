@@ -178,7 +178,7 @@ preview_site <- function(path) {
 
 build_site_rstudio <- function() {
   devtools::document()
-  callr::r(function() pkgdown::build_site(preview = TRUE), show = TRUE)
+  callr::r(function() packagePages::build_site(preview = TRUE), show = TRUE)
   invisible()
 }
 
@@ -226,4 +226,3 @@ data_assets <- function(pkg = ".") {
 
   dir(path, full.names = TRUE)
 }
-
