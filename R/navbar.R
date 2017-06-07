@@ -14,8 +14,21 @@ data_navbar <- function(pkg = ".", depth = 0L) {
 
   navbar$left <- render_navbar_links(navbar$left, depth = depth)
   navbar$right <- render_navbar_links(navbar$right, depth = depth)
+  navbar$right <- popUp(navbar$right, unlist(pkg$meta$navbar$right  %||% default$right, recursive=FALSE)[names(unlist(pkg$meta$navbar$right  %||% default$right, recursive=FALSE))=="href"], "twitter.com")
 
   print_yaml(navbar)
+}
+
+popUp <- function(navbar_piece, hrefs, which.links) {
+    navbar_piece_SPLIT <- strsplit(navbar_piece, "\n")
+    if (length(index <- grep(which.links, navbar_piece_SPLIT[[1]])) > 0) {
+        href <- grep(which.links, hrefs, value=TRUE)
+        for (index.iter in index) {
+            navbar_piece_SPLIT[[1]][index.iter] <-
+                paste0("   <a style=\"cursor:pointer\" onclick=\"window.open('", href, "','','scrollbars=0,menubar=0,height=300,width=600,resizable=0,toolbar=0,location=0,status=0')\">")
+        }
+    }
+    paste0(navbar_piece_SPLIT[[1]], collapse="\n")
 }
 
 render_navbar_links <- function(x, depth = 0L) {
