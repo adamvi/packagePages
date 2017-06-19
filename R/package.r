@@ -41,16 +41,16 @@ str_person <- function(pers) {
 }
 
 read_desc <- function(path = ".") {
-  path <- file.path(path, "DESCRIPTION")
-  if (!file.exists(path)) {
-    stop("Can't find DESCRIPTION", call. = FALSE)
+  path.DESCRIPTION <- file.path(path, "DESCRIPTION")
+  if (!file.exists(path.DESCRIPTION)) {
+     read_meta(path, return_what="DESCRIPTION")
   }
-  desc::description$new(path)
+  desc::description$new(path.DESCRIPTION)
 }
 
 # Metadata ----------------------------------------------------------------
 
-read_meta <- function(path) {
+read_meta <- function(path, return_what="YAML") {
   path <- find_first_existing(path, c("_pkgdown.yml", "_pkgdown.yaml"))
 
   if (is.null(path)) {
@@ -58,8 +58,12 @@ read_meta <- function(path) {
   } else {
     yaml <- yaml::yaml.load_file(path)
   }
-
-  yaml
+  if ("DESCRIPTION" %in% names(yaml)) {
+      for (des.iter in seq_along(yaml[['DESCRIPTION']])) {
+        cat(paste(names(yaml[['DESCRIPTION']])[des.iter], yaml[['DESCRIPTION']][[des.iter]], sep=": "), file="DESCRIPTION", append=TRUE, sep="\n")
+      }
+  }
+  if (return_what=="YAML") return(yaml) else return(NULL)
 }
 
 # Topics ------------------------------------------------------------------
@@ -147,5 +151,3 @@ dir_depth <- function(x) {
     strsplit("") %>%
     purrr::map_int(function(x) sum(x == "/"))
 }
-
-

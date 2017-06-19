@@ -146,6 +146,8 @@ build_project_site <- function(pkg = ".",
 
   build_home(pkg, path = path, encoding = encoding)
 
+  if (file.exists("DESCRIPTION")) file.remove("DESCRIPTION")
+
   if (preview) {
     preview_site(path)
   }
