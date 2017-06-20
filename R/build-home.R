@@ -237,7 +237,7 @@ data_link_bug_report <- function(pkg = ".") {
   if (is.na(bug_reports))
     return(character())
 
-  link_url("Report a bug", bug_reports)
+  link_url("Report an issue", bug_reports)
 }
 
 data_link_cran <- function(pkg = ".") {
