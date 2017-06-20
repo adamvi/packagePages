@@ -1,9 +1,15 @@
-#' Build packagePages project website
+#' Build packagePages package website
 #'
-#' \code{build_project_site()} is a convenient wrapper around one function: \code{\link{build_home}()}
-#'
-#' See the documentation for \code{\link{build_home}()} to control
-#' the site.
+#' \code{packagePages()} is a copy of \code{\link{build_site}} so that a parallel function exists against \code{projectPages()}.
+#' \code{pagkagePages()} is a convenient wrapper around two functions:
+#' \itemize{
+#'   \item \code{\link{build_articles}()}
+#'   \item \code{\link{build_home}()}
+#'   \item \code{\link{build_reference}()}
+#'   \item \code{\link{build_news}()}
+#' }
+#' See the documentation for the each function to learn how to control
+#' that aspect of the site.
 #'
 #' @section YAML config:
 #' There are five top-level YAML settings that affect the entire site:
@@ -129,11 +135,15 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' build_project_site()
+#' build_package_site()
 #' }
-build_project_site <- function(pkg = ".",
+packagePages <- function(pkg = ".",
                        path = "docs",
+                       examples = TRUE,
+                       run_dont_run = FALSE,
+                       mathjax = TRUE,
                        preview = interactive(),
+                       seed = 1014,
                        encoding = "UTF-8"
                        ) {
   old <- set_pkgdown_env("true")
@@ -145,8 +155,17 @@ build_project_site <- function(pkg = ".",
   init_site(pkg, path)
 
   build_home(pkg, path = path, encoding = encoding)
-
-  if (file.exists("DESCRIPTION")) file.remove("DESCRIPTION")
+  build_reference(pkg,
+    lazy = FALSE,
+    examples = examples,
+    run_dont_run = run_dont_run,
+    mathjax = mathjax,
+    seed = seed,
+    path = file.path(path, "reference"),
+    depth = 1L
+  )
+  build_articles(pkg, path = file.path(path, "articles"), depth = 1L, encoding = encoding)
+  build_news(pkg, path = file.path(path, "news"), depth = 1L)
 
   if (preview) {
     preview_site(path)
