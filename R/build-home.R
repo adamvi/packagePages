@@ -221,12 +221,11 @@ data_link_github <- function(pkg = ".") {
     strsplit(",\\s+") %>%
     `[[`(1)
 
-  github <- grepl("github", urls)
+  github <- grep("github", urls[!grepl("github\\.io", urls)], value=TRUE)
 
-  if (!any(github))
-    return(character())
+  if (length(github)==0) return(character())
 
-  link_url("Browse source code", urls[which(github)[[1]]])
+  link_url("View source code", github)
 }
 
 data_link_bug_report <- function(pkg = ".") {
@@ -248,7 +247,7 @@ data_link_cran <- function(pkg = ".") {
     return(list())
 
   link_url(
-    "Download from CRAN",
+    paste(name, "on CRAN"),
     paste0("https://cran.r-project.org/package=", name)
   )
 }
