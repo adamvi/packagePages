@@ -223,8 +223,7 @@ data_link_github <- function(pkg = ".") {
 
   github <- grep("github", urls[!grepl("github\\.io", urls)], value=TRUE)
 
-  if (!any(github))
-    return(character())
+  if (length(github)==0) return(character())
 
   link_url("View source code", github)
 }
