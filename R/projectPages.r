@@ -129,13 +129,14 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' build_project_site()
+#' projectPages()
 #' }
 projectPages <- function(pkg = ".",
                        path = "docs",
                        preview = interactive(),
                        encoding = "UTF-8"
                        ) {
+  if (file.exists("DESCRIPTION")) stop("NOTE: projectPages should not be applied to directories with a pre-existing R package description. Use packagePages() instead.")
   old <- set_pkgdown_env("true")
   on.exit(set_pkgdown_env(old))
 
