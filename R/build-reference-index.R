@@ -23,7 +23,7 @@ data_reference_index <- function(pkg = ".", depth = 1L) {
   }
 
   print_yaml(list(
-    pagetitle = "Function reference",
+    pagetitle = "Reference",
     sections = sections
   ))
 }

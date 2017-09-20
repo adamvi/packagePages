@@ -62,7 +62,7 @@ build_news_single <- function(pkg, path, depth) {
     list(
       version = "All releases",
       contents = news %>% purrr::transpose(),
-      pagetitle = "All news"
+      pagetitle = "Change log"
     ),
     file.path(path, "index.html"),
     depth = depth
