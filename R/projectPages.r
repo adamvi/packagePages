@@ -126,6 +126,8 @@
 #' @param path Location in which to save website, relative to package
 #'   path.
 #' @param preview If \code{TRUE}, will preview freshly generated site
+#' @param encoding Defaults to UTF-8
+#' @param vignettes_directory Defaults to Documents
 #' @export
 #' @examples
 #' \dontrun{
@@ -134,19 +136,20 @@
 projectPages <- function(pkg = ".",
                        path = "docs",
                        preview = interactive(),
-                       encoding = "UTF-8"
+                       encoding = "UTF-8",
+                       vignettes_directory="Documents"
                        ) {
   if (file.exists("DESCRIPTION")) stop("NOTE: projectPages should not be applied to directories with a pre-existing R package description. Use packagePages() instead.")
   old <- set_pkgdown_env("true")
   on.exit(set_pkgdown_env(old))
 
-  pkg <- as_pkgdown(pkg)
+  pkg <- as_pkgdown(pkg, vignettes_directory)
   path <- rel_path(path, pkg$path)
 
   init_site(pkg, path)
 
   build_home(pkg, path = path, encoding = encoding)
-  build_articles(pkg, path = file.path(path, "articles"), depth = 1L, encoding = encoding)
+  build_articles(pkg, path = file.path(path, "articles"), depth = 1L, encoding = encoding, vignettes_directory="Documents")
 
   if (file.exists("DESCRIPTION")) file.remove("DESCRIPTION")
 

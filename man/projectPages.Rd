@@ -5,7 +5,7 @@
 \title{Build packagePages project website}
 \usage{
 projectPages(pkg = ".", path = "docs", preview = interactive(),
-  encoding = "UTF-8")
+  encoding = "UTF-8", vignettes_directory = "Documents")
 }
 \arguments{
 \item{pkg}{Path to source package. If R working directory is not
@@ -17,7 +17,9 @@ path.}
 
 \item{preview}{If \code{TRUE}, will preview freshly generated site}
 
-\item{encoding}{The encoding of the input files.}
+\item{encoding}{Defaults to UTF-8}
+
+\item{vignettes_directory}{Defaults to Documents}
 }
 \description{
 \code{projectPages()} is a convenient wrapper around one function: \code{\link{build_home}()}
@@ -150,6 +152,6 @@ for pkgdown templates to ensure that you use the correct components.
 
 \examples{
 \dontrun{
-build_project_site()
+projectPages()
 }
 }

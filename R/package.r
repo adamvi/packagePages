@@ -4,8 +4,9 @@
 #' design and you're writing your own equivalent of \code{\link{build_site}}.
 #'
 #' @param path Path to package
+#' @param vignettes_directory Name of vignettes directory (defaults to vignettes)
 #' @export
-as_pkgdown <- function(path = ".") {
+as_pkgdown <- function(path = ".", vignettes_directory="vignettes") {
   if (is_pkgdown(path)) {
     return(path)
   }
@@ -20,7 +21,7 @@ as_pkgdown <- function(path = ".") {
       desc = read_desc(path),
       meta = read_meta(path),
       topics = topic_index(path),
-      vignettes = vignette_index(path)
+      vignettes = vignette_index(path, vignettes_directory)
     ),
     class = "pkgdown"
   )
@@ -125,14 +126,14 @@ is_internal <- function(x) {
 
 # Vignettes ---------------------------------------------------------------
 
-vignette_index <- function(path = ".") {
+vignette_index <- function(path = ".", vignettes_directory="vignettes") {
   vig_path <- dir(
-    file.path(path, "vignettes"),
+    file.path(path, vignettes_directory),
     pattern = "\\.Rmd$",
     recursive = TRUE
   )
 
-  title <- file.path(path, "vignettes", vig_path) %>%
+  title <- file.path(path, vignettes_directory, vig_path) %>%
     purrr::map(rmarkdown::yaml_front_matter) %>%
     purrr::map_chr("title", .null = "UNKNOWN TITLE")
 
