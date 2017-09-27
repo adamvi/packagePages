@@ -146,6 +146,7 @@ projectPages <- function(pkg = ".",
   init_site(pkg, path)
 
   build_home(pkg, path = path, encoding = encoding)
+  build_articles(pkg, path = file.path(path, "articles"), depth = 1L, encoding = encoding)
 
   if (file.exists("DESCRIPTION")) file.remove("DESCRIPTION")
 
