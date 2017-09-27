@@ -4,10 +4,12 @@
 \alias{as_pkgdown}
 \title{Generate pkgdown data structure}
 \usage{
-as_pkgdown(path = ".")
+as_pkgdown(path = ".", vignettes_directory = "vignettes")
 }
 \arguments{
 \item{path}{Path to package}
+
+\item{vignettes_directory}{Name of vignettes directory (defaults to vignettes)}
 }
 \description{
 You will generally not need to use this unless you need a custom site

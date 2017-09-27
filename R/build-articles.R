@@ -53,15 +53,16 @@
 #' @param encoding The encoding of the input files.
 #' @param quiet Set to `FALSE` to display output of knitr and
 #'   pandoc. This is useful when debugging.
+#' @param vignettes_directory Name of vignettes directory (defaults to vignettes)
 #' @export
 build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
-                           encoding = "UTF-8", quiet = TRUE) {
+                           encoding = "UTF-8", quiet = TRUE, vignettes_directory="vignettes") {
   old <- set_pkgdown_env("true")
   on.exit(set_pkgdown_env(old))
 
-  pkg <- as_pkgdown(pkg)
+  pkg <- as_pkgdown(pkg, vignettes_directory)
   path <- rel_path(path, pkg$path)
-  if (!has_vignettes(pkg$path)) {
+  if (!has_vignettes(pkg$path, vignettes_directory)) {
     return(invisible())
   }
 
@@ -69,7 +70,7 @@ build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
   mkdir(path)
 
   # copy everything from vignettes/ to docs/articles
-  copy_dir(file.path(pkg$path, "vignettes"), path)
+  copy_dir(file.path(pkg$path, vignettes_directory), path)
 
   # Render each Rmd then delete them
   articles <- tibble::tibble(
@@ -270,7 +271,7 @@ default_articles_index <- function(pkg = ".") {
 
 }
 
-has_vignettes <- function(path = ".") {
-  vign_path <- file.path(path, "vignettes")
+has_vignettes <- function(path = ".", vignettes_directory="vignettes") {
+  vign_path <- file.path(path, vignettes_directory)
   file.exists(vign_path) && length(list.files(vign_path))
 }
