@@ -137,7 +137,7 @@ projectPages <- function(pkg = ".",
                        path = "docs",
                        preview = interactive(),
                        encoding = "UTF-8",
-                       vignettes_directory="documents"
+                       vignettes_directory="Documents"
                        ) {
   if (file.exists("DESCRIPTION")) stop("NOTE: projectPages should not be applied to directories with a pre-existing R package description. Use packagePages() instead.")
   old <- set_pkgdown_env("true")

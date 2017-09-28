@@ -5,7 +5,7 @@
 \title{Build packagePages project website}
 \usage{
 projectPages(pkg = ".", path = "docs", preview = interactive(),
-  encoding = "UTF-8", vignettes_directory = "documents")
+  encoding = "UTF-8", vignettes_directory = "Documents")
 }
 \arguments{
 \item{pkg}{Path to source package. If R working directory is not
