@@ -59,11 +59,11 @@ read_meta <- function(path, return_what="YAML") {
   } else {
     yaml <- yaml::yaml.load_file(path)
   }
-  if ("DESCRIPTION" %in% names(yaml)) {
+  if ("DESCRIPTION" %in% names(yaml) && !file.exists("DESCRIPTION")) {
       for (des.iter in seq_along(yaml[['DESCRIPTION']])) {
         cat(paste(names(yaml[['DESCRIPTION']])[des.iter], yaml[['DESCRIPTION']][[des.iter]], sep=": "), file="DESCRIPTION", append=TRUE, sep="\n")
       }
-  }
+ }
   if (return_what=="YAML") return(yaml) else return(NULL)
 }
 
