@@ -105,7 +105,7 @@ render_rmd <- function(pkg,
                        style = "vignette") {
   message("Building article '", output_file, "'")
 
-  format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc, style = "vignette")
+  format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc, style = style)
   on.exit(unlink(format$path), add = TRUE)
 
   path <- callr::r_safe(
@@ -128,7 +128,7 @@ build_rmarkdown_format <- function(pkg = ".",
                                    depth = 1L,
                                    data = list(),
                                    toc = TRUE,
-                                   style="vignette") {
+                                   style = "vignette") {
   # Render vignette template to temporary file
   path <- tempfile(fileext = ".html")
   suppressMessages(
