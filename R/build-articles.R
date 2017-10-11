@@ -76,7 +76,8 @@ build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
   articles <- tibble::tibble(
     input = file.path(path, pkg$vignettes$file_in),
     output_file = pkg$vignettes$file_out,
-    depth = pkg$vignettes$vig_depth + depth
+    depth = pkg$vignettes$vig_depth + depth,
+    style = "vignette"
   )
   data <- list(pagetitle = "$title$")
   purrr::pwalk(articles, render_rmd,
@@ -100,10 +101,11 @@ render_rmd <- function(pkg,
                        toc = TRUE,
                        depth = 1L,
                        encoding = "UTF-8",
-                       quiet = TRUE) {
+                       quiet = TRUE,
+                       style = "vignette") {
   message("Building article '", output_file, "'")
 
-  format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc)
+  format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc, style = "vignette")
   on.exit(unlink(format$path), add = TRUE)
 
   path <- callr::r_safe(
@@ -125,11 +127,12 @@ render_rmd <- function(pkg,
 build_rmarkdown_format <- function(pkg = ".",
                                    depth = 1L,
                                    data = list(),
-                                   toc = TRUE) {
+                                   toc = TRUE,
+                                   style="vignette") {
   # Render vignette template to temporary file
   path <- tempfile(fileext = ".html")
   suppressMessages(
-    render_page(pkg, "vignette", data, path, depth = depth)
+    render_page(pkg, style, data, path, depth = depth)
   )
 
   list(
