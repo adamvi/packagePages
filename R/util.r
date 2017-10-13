@@ -246,3 +246,23 @@ set_pkgdown_env <- function(x) {
   Sys.setenv("IN_PKGDOWN" = x)
   invisible(old)
 }
+
+###---   ...   ---###   CENTER FOR ASSESSMENT added UTILS   ###---   ...   ---###
+
+trimWhiteSpace <- function(line) gsub("(^ +)|( +$)", "", line)
+
+###  Get YAML from .Rmd file
+getYAML <- function(input, element=NULL){
+  con <- file(input) # input file
+  rmd.text <- rmarkdown:::read_lines_utf8(con, getOption("encoding"))
+  # Valid YAML could end in "---" or "..."  - test for both.
+  rmd.yaml <- rmd.text[grep("---", rmd.text)[1]:ifelse(length(grep("---", rmd.text))>=2, grep("---", rmd.text)[2], grep("[.][.][.]", rmd.text)[1])]
+  close(con)
+  if (is.null(element)) {
+    return(rmd.yaml)
+  } else {
+    tmp.element <- gsub("'", "", gsub("\"", "", trimWhiteSpace(gsub(element, "", rmd.yaml[grep(element, rmd.yaml)]))))
+    if (length(tmp.element) == 0) tmp.element <- "vignette"
+    return(tmp.element)
+  }
+}

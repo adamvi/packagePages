@@ -72,12 +72,14 @@ build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
   # copy everything from vignettes/ to docs/articles
   copy_dir(file.path(pkg$path, vignettes_directory), path)
 
+  art.style <- sapply(file.path(path, pkg$vignettes$file_in), function(f) getYAML(f, element="style:"))
+
   # Render each Rmd then delete them
   articles <- tibble::tibble(
     input = file.path(path, pkg$vignettes$file_in),
     output_file = pkg$vignettes$file_out,
     depth = pkg$vignettes$vig_depth + depth,
-    style = "vignette"
+    style = art.style
   )
   data <- list(pagetitle = "$title$")
   purrr::pwalk(articles, render_rmd,
@@ -102,7 +104,7 @@ render_rmd <- function(pkg,
                        depth = 1L,
                        encoding = "UTF-8",
                        quiet = TRUE,
-                       style = "vignette") {
+                       style = style) {
   message("Building article '", output_file, "'")
 
   format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc, style = style)
@@ -120,6 +122,7 @@ render_rmd <- function(pkg,
     ),
     show = !quiet
   )
+
   update_rmarkdown_html(path, strip_header = strip_header, depth = depth,
     index = pkg$topics)
 }
@@ -128,23 +131,42 @@ build_rmarkdown_format <- function(pkg = ".",
                                    depth = 1L,
                                    data = list(),
                                    toc = TRUE,
-                                   style = "vignette") {
-  # Render vignette template to temporary file
-  path <- tempfile(fileext = ".html")
-  suppressMessages(
-    render_page(pkg, style, data, path, depth = depth)
-  )
+                                   style = style) {
 
-  list(
-    path = path,
-    format = rmarkdown::html_document(
-      toc = toc,
-      toc_depth = 2,
-      self_contained = FALSE,
-      theme = NULL,
-      template = path
+  if (style=="vignette") {
+    # Render vignette template to temporary file
+    path <- tempfile(fileext = ".html")
+    suppressMessages(
+      render_page(pkg, "vignette", data, path, depth = depth)
     )
-  )
+
+    return(list(
+      path = path,
+      format = rmarkdown::html_document(
+        toc = toc,
+        toc_depth = 2,
+        self_contained = FALSE,
+        theme = NULL,
+        template = path
+      )
+    ))
+  }
+  if (style=="tufte") {
+    navbar.path <- tempfile(fileext = ".html")
+    suppressMessages(
+      render_page(pkg, "tufte", data, navbar.path, depth = depth)
+    )
+
+    return(list(
+      path = NULL,
+      format = tufte::tufte_html(
+        toc = toc,
+        toc_depth = 2,
+        self_contained = FALSE,
+        includes = rmarkdown::includes(in_header = navbar.path)
+      )
+    ))
+  }
 }
 
 tweak_rmarkdown_html <- function(html, strip_header = FALSE, depth = 1L, index = NULL) {
