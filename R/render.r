@@ -35,17 +35,24 @@ render_page <- function(pkg = ".", name, data, path = "", depth = 0L) {
   data <- utils::modifyList(data, data_template(pkg, depth = depth))
 
   # render template components
-  pieces <- c("head", "navbar", "header", "content", "footer")
+  if (name=="tufte") pieces <- "navbar" else pieces <- c("head", "navbar", "header", "content", "footer")
+
   components <- pieces %>%
     purrr::map_chr(find_template, name, template_path = template_path(pkg)) %>%
     purrr::map(render_template, data = data) %>%
     purrr::set_names(pieces)
   components$template <- name
 
-  # render complete layout
-  find_template("layout", name, template_path = template_path(pkg)) %>%
-    render_template(components) %>%
-    write_if_different(path)
+  if (name=="tufte") {
+    write_if_different(components$navbar, path)
+  }
+
+  if (name=="vignette") {
+    # render complete layout
+    find_template("layout", name, template_path = template_path(pkg)) %>%
+      render_template(components) %>%
+      write_if_different(path)
+  }
 }
 
 #' @export
@@ -53,7 +60,7 @@ render_page <- function(pkg = ".", name, data, path = "", depth = 0L) {
 data_template <- function(pkg = ".", depth = 0L) {
 
   strReverse <- function(x) sapply(lapply(strsplit(x, NULL), rev), paste, collapse="")
-  
+
   pkg <- as_pkgdown(pkg)
   desc <- pkg$desc
   name <- desc$get("Package")[[1]]
