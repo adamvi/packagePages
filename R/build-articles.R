@@ -151,6 +151,7 @@ build_rmarkdown_format <- function(pkg = ".",
       )
     ))
   }
+  
   if (style=="tufte") {
     navbar.path <- tempfile(fileext = ".html")
     suppressMessages(
