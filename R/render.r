@@ -35,7 +35,7 @@ render_page <- function(pkg = ".", name, data, path = "", depth = 0L) {
   data <- utils::modifyList(data, data_template(pkg, depth = depth))
 
   # render template components
-  if (name=="tufte") pieces <- c("head", "navbar") else pieces <- c("head", "navbar", "header", "content", "footer")
+  pieces <- c("head", "navbar", "header", "content", "footer")
 
   components <- pieces %>%
     purrr::map_chr(find_template, name, template_path = template_path(pkg)) %>%
@@ -43,17 +43,9 @@ render_page <- function(pkg = ".", name, data, path = "", depth = 0L) {
     purrr::set_names(pieces)
   components$template <- name
 
-  if (name=="tufte") {
-    write_if_different(components$navbar, path)
-    write_if_different(components$head, path)
-  }
-
-  if (name=="vignette") {
-    # render complete layout
-    find_template("layout", name, template_path = template_path(pkg)) %>%
-      render_template(components) %>%
-      write_if_different(path)
-  }
+  find_template("layout", name, template_path = template_path(pkg)) %>%
+    render_template(components) %>%
+    write_if_different(path)
 }
 
 #' @export
