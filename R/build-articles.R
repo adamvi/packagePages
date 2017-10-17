@@ -133,9 +133,10 @@ build_rmarkdown_format <- function(pkg = ".",
                                    toc = TRUE,
                                    style = style) {
 
+  path <- tempfile(fileext = ".html")
+
   if (style=="vignette") {
     # Render vignette template to temporary file
-    path <- tempfile(fileext = ".html")
     suppressMessages(
       render_page(pkg, "vignette", data, path, depth = depth)
     )
@@ -152,9 +153,8 @@ build_rmarkdown_format <- function(pkg = ".",
     ))
   }
   if (style=="tufte") {
-    navbar.path <- tempfile(fileext = ".html")
     suppressMessages(
-      render_page(pkg, "tufte", data, navbar.path, depth = depth)
+      render_page(pkg, "tufte", data, path, depth = depth)
     )
 
     return(list(
@@ -163,7 +163,8 @@ build_rmarkdown_format <- function(pkg = ".",
         toc = toc,
         toc_depth = 2,
         self_contained = FALSE,
-        includes = rmarkdown::includes(in_header = navbar.path)
+        # tufte_variant="envisioned", #  Doesn't seem to work ...
+        template=path
       )
     ))
   }
