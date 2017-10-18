@@ -166,6 +166,7 @@ build_rmarkdown_format <- function(pkg = ".",
       )
     ))
   }
+
   if (style=="tufte") {
     suppressMessages(
       render_page(pkg, "tufte", data, path, depth = depth)
@@ -173,12 +174,13 @@ build_rmarkdown_format <- function(pkg = ".",
 
     return(list(
       path = NULL,
-      format = tufte::tufte_html(
+      format = rmarkdown::html_document(
+        css = "tufte.css",
         toc = toc,
+        toc_float = TRUE,
         toc_depth = 2,
         self_contained = FALSE,
-        # tufte_variant="envisioned", #  Doesn't seem to work ...
-        template=path
+        template = path
       )
     ))
   }
