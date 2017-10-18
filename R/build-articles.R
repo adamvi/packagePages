@@ -88,6 +88,20 @@ build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
     encoding = encoding,
     quiet = quiet
   )
+
+  ###  PDF
+  if (any(art.style=="tufte")){
+    pdfs <- articles[art.style=="tufte", 1:2]
+    pdfs$output_file <- file.path("..", gsub(".html", ".pdf", pdfs$output_file))
+
+    purrr::pwalk(pdfs, rmarkdown::render,
+      output_format = packagePages::tufte_pdf(
+        latex_engine = "xelatex",
+        keep_tex = !quiet
+      )
+    )
+  }
+
   purrr::walk(articles$input, unlink)
 
   build_articles_index(pkg, path = path, depth = depth)
