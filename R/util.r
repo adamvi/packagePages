@@ -266,3 +266,10 @@ getYAML <- function(input, element=NULL){
     return(tmp.element)
   }
 }
+
+
+searchYAML <- function(input, element="includes"){
+  yml <- getYAML(input)
+  yml <-yaml::yaml.load(paste(yml[-c(grep("---", yml), grep("[.][.][.]", yml))], collapse="\n"))
+  if (!is.null(yml[[element]]))  return(yml[[element]])
+}
