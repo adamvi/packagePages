@@ -93,13 +93,18 @@ build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
   if (any(art.style=="tufte")){
     pdfs <- articles[art.style=="tufte", 1:2]
     pdfs$output_file <- file.path("..", gsub(".html", ".pdf", pdfs$output_file))
+    pdfs$includes <- sapply(pdfs$input, function(f) searchYAML(f))
 
-    purrr::pwalk(pdfs, rmarkdown::render,
-      output_format = packagePages::tufte_pdf(
+    .render.pdfs <- function(row) {
+      tmp.format <- packagePages::tufte_book(
         latex_engine = "xelatex",
-        keep_tex = !quiet
+        keep_tex = !quiet,
+        includes = pdfs$includes[[row]]
       )
-    )
+      rmarkdown::render(input = pdfs$input[row], output_file = pdfs$output_file[row], output_format = tmp.format, clean = FALSE)
+    }
+
+    sapply(1:nrow(pdfs), function(f) .render.pdfs(f))
   }
 
   purrr::walk(articles$input, unlink)
