@@ -32,18 +32,18 @@ tufte_book = function(
 tufte_pdf = function(
   documentclass = c('tufte-handout', 'tufte-book'), fig_width = 4, fig_height = 2.5,
   fig_crop = TRUE, dev = 'pdf', highlight = 'default',
-  template, latex_engine, pandoc_args, ...
+  template, latex_engine="xelatex", includes, pandoc_args, ...
 ) {
-
-  template <- system.file("templates", "tufte-handout.tex", package = "packagePages")
-  pandoc_args <- c("--bibliography", system.file("rmarkdown", "content", "bibliography", "Literasee.bib" , package = "Literasee"))
+  if (missing(template)) template <- system.file("templates", "tufte-handout.tex", package = "packagePages")
+  if (missing(pandoc_args)) pandoc_args <- c("--bibliography", system.file("rmarkdown", "content", "bibliography", "Literasee.bib" , package = "Literasee"))
+  pandoc_args <- c(rmarkdown::includes_to_pandoc_args(includes), pandoc_args)
 
   # resolve default highlight
   if (identical(highlight, 'default')) highlight = 'pygments'
 
   # call the base pdf_document format with the appropriate options
   format = rmarkdown::pdf_document(
-    fig_width = fig_width, fig_height = fig_height, fig_crop = fig_crop,
+    toc =TRUE, fig_width = fig_width, fig_height = fig_height, fig_crop = fig_crop,
     dev = dev, highlight = highlight, template = template, latex_engine = latex_engine, pandoc_args = pandoc_args, ...
   )
 
