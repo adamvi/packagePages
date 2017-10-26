@@ -126,7 +126,7 @@ render_rmd <- function(pkg,
                        style = style) {
   message("Building article '", output_file, "'")
 
-  format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc, style = style)
+  format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc, style = style, output_file = output_file)
   on.exit(unlink(format$path), add = TRUE)
 
   path <- callr::r_safe(
@@ -150,7 +150,8 @@ build_rmarkdown_format <- function(pkg = ".",
                                    depth = 1L,
                                    data = list(),
                                    toc = TRUE,
-                                   style = style) {
+                                   style = style,
+                                   output_file=output_file) {
 
   path <- tempfile(fileext = ".html")
 
@@ -173,6 +174,7 @@ build_rmarkdown_format <- function(pkg = ".",
   }
 
   if (style=="tufte") {
+    data$pdffile <- basename(gsub(".html", ".pdf", output_file))
     suppressMessages(
       render_page(pkg, "tufte", data, path, depth = depth)
     )
