@@ -94,12 +94,17 @@ build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
     pdfs <- articles[art.style=="tufte", 1:2]
     pdfs$output_file <- file.path("..", gsub(".html", ".pdf", pdfs$output_file))
     pdfs$includes <- sapply(pdfs$input, function(f) searchYAML(f))
-
+    pdfs$pandoc_args <- lapply(pdfs$input, function(f) {
+      tmp.bib <- searchYAML(f, "bibligraphy")
+      if (!is.null(tmp.bib)) tmp.bib <- c("--bibliography", tmp.bib)
+      return(tmp.bib)
+    })
     .render.pdfs <- function(row) {
       tmp.format <- packagePages::tufte_book(
         latex_engine = "xelatex",
         keep_tex = !quiet,
-        includes = pdfs$includes[[row]]
+        includes = pdfs$includes[[row]],
+        pandoc_args = pdfs$pandoc_args[[row]]
       )
       rmarkdown::render(input = pdfs$input[row], output_file = pdfs$output_file[row], output_format = tmp.format, clean = FALSE)
     }
@@ -126,7 +131,7 @@ render_rmd <- function(pkg,
                        style = style) {
   message("Building article '", output_file, "'")
 
-  format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc, style = style, output_file = output_file)
+  format <- build_rmarkdown_format(pkg, depth = depth, data = data, toc = toc, style = style, input = input, output_file = output_file)
   on.exit(unlink(format$path), add = TRUE)
 
   path <- callr::r_safe(
@@ -151,7 +156,8 @@ build_rmarkdown_format <- function(pkg = ".",
                                    data = list(),
                                    toc = TRUE,
                                    style = style,
-                                   output_file=output_file) {
+                                   input = input,
+                                   output_file = output_file) {
 
   path <- tempfile(fileext = ".html")
 
@@ -179,6 +185,11 @@ build_rmarkdown_format <- function(pkg = ".",
       render_page(pkg, "tufte", data, path, depth = depth)
     )
 
+    tmp.bib <- searchYAML(input, "bibliography")
+    if (is.null(tmp.bib)) {
+      tmp.bib <- c("--bibliography", system.file("rmarkdown", "content", "bibliography", "Literasee.bib" , package = "Literasee"))
+    } else  tmp.bib <- c("--bibliography", tmp.bib)
+
     return(list(
       path = NULL,
       format = rmarkdown::html_document(
@@ -188,8 +199,7 @@ build_rmarkdown_format <- function(pkg = ".",
         toc_depth = 2,
         self_contained = FALSE,
         template = path,
-        pandoc_args = c("--bibliography", system.file("rmarkdown", "content", "bibliography", "Literasee.bib" , package = "Literasee"))
-
+        pandoc_args = tmp.bib
       )
     ))
   }
