@@ -187,7 +187,9 @@ build_rmarkdown_format <- function(pkg = ".",
         toc_float = TRUE,
         toc_depth = 2,
         self_contained = FALSE,
-        template = path
+        template = path,
+        pandoc_args = c("--bibliography", system.file("rmarkdown", "content", "bibliography", "Literasee.bib" , package = "Literasee"))
+
       )
     ))
   }

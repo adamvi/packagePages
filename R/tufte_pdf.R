@@ -35,7 +35,12 @@ tufte_pdf = function(
   template, latex_engine="xelatex", includes, pandoc_args, ...
 ) {
   if (missing(template)) template <- system.file("templates", "tufte-handout.tex", package = "packagePages")
-  if (missing(pandoc_args)) pandoc_args <- c("--bibliography", system.file("rmarkdown", "content", "bibliography", "Literasee.bib" , package = "Literasee"))
+  if (missing(pandoc_args)) {
+    pandoc_args <- c(
+        "--bibliography", system.file("rmarkdown", "content", "bibliography", "Literasee.bib" , package = "Literasee"),
+        # "--csl", system.file("rmarkdown", "content", "bibliography", "apa.csl" , package = "Literasee")) #,
+        "--natbib")
+  }
   pandoc_args <- c(rmarkdown::includes_to_pandoc_args(includes), pandoc_args)
 
   # resolve default highlight
