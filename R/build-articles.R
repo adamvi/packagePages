@@ -99,6 +99,9 @@ build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
       if (!is.null(tmp.bib)) tmp.bib <- c("--bibliography", tmp.bib)
       return(tmp.bib)
     })
+
+    sapply(pdfs$input, function(f) scrubPDF(f))
+
     .render.pdfs <- function(row) {
       tmp.format <- packagePages::tufte_book(
         latex_engine = "xelatex",

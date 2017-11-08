@@ -115,6 +115,7 @@ $endif$
 
 % morefloats
 \usepackage{morefloats}
+\usepackage{float}
 
 $if(ctex)$
 \usepackage{ctexcap}
@@ -133,7 +134,7 @@ $if(title)$
 \title{$title$}
 $endif$
 $if(author)$
-\author{$for(author)$$author$$sep$ \and $endfor$}
+\author{$for(author)$$author$$sep$ \& $endfor$}
 $endif$
 $if(date)$
 \date{$date$}
