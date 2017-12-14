@@ -107,7 +107,8 @@ build_articles <- function(pkg = ".", path = "docs/articles", depth = 1L,
         latex_engine = "xelatex",
         keep_tex = !quiet,
         includes = pdfs$includes[[row]],
-        pandoc_args = pdfs$pandoc_args[[row]]
+        pandoc_args = pdfs$pandoc_args[[row]],
+        number_sections = TRUE
       )
       rmarkdown::render(input = pdfs$input[row], output_file = pdfs$output_file[row], output_format = tmp.format, clean = FALSE)
     }
