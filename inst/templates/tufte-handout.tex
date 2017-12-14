@@ -1,8 +1,24 @@
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
 
-%  AVI - remove the "double-sided" effect (blank page between chapters) - https://tex.stackexchange.com/questions/111580/removing-an-unwanted-page-between-two-chapters
+%%%   AVI
+
+%remove the "double-sided" effect (blank page between chapters) - https://tex.stackexchange.com/questions/111580/removing-an-unwanted-page-between-two-chapters
+
 \let\cleardoublepage\clearpage
-%
+
+%  Chapter format - number on same line as title
+%    http://latex.org/forum/viewtopic.php?t=25750
+
+\titleformat{\chapter}%
+[block]% shape
+{\relax\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\begin{fullwidth}}{}}% format applied to label+text
+{\itshape\huge\thechapter\hspace{10pt}}% label
+{0pt}% horizontal separation between label and title body
+{\huge\rmfamily\itshape}% before the title body
+[\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}}{}]% after the title body
+
+%%%   AVI
+
 
 % ams
 \usepackage{amssymb,amsmath}
@@ -84,6 +100,19 @@ $if(numbersections)$
 $else$
 \setcounter{secnumdepth}{-1}
 $endif$
+
+
+%% Subsubsection declarations  -  https://tex.stackexchange.com/questions/389608/copying-subsection-style-to-subsubsection
+
+\titleclass{\subsubsection}{straight}
+\titleformat{\subsubsection}%
+  [hang]% shape
+  {\normalfont\large\itshape}% format applied to label+text
+  {\thesubsubsection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
 
 % citations
 $if(natbib)$
