@@ -37,7 +37,8 @@ markdown <- function(path = NULL, ..., depth = 0L, index = NULL) {
     from = "markdown_github-hard_line_breaks",
     to = "html",
     options = list(
-      "--smart",
+      "-t",
+      "html4",
       "--indented-code-classes=R",
       "--section-divs",
       ...
