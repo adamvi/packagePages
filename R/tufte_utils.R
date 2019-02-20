@@ -67,7 +67,7 @@ searchYAML <- function(input, element="includes"){
 
 
 scrubPDF <- function(input) {
-  md.text <- rmarkdown:::read_lines_utf8(file(input), getOption("encoding"))
+  md.text <- rmarkdown:::read_utf8(file(input), getOption("encoding"))
 
   #  Equations
   # tmp.latex.eqn <- list()
