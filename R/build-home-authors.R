@@ -60,6 +60,10 @@ data_author_info <- function(pkg = ".") {
       href = "https://github.com/adamvi",
       html = "<img src='https://centerforassessment.github.io/assets/adamvi.png' height='20' />"
     ),
+    "Nathan Dadey" = list(
+      href = "https://github.com/ndadey",
+      html = "<img src='https://avatars0.githubusercontent.com/u/17909944' height='20' />"
+    ),
     "Ben Domingue" = list(
       href = "https://github.com/ben-domingue",
       html = "<img src='https://avatars2.githubusercontent.com/u/1353244' height='20' />"
