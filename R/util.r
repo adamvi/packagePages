@@ -34,7 +34,8 @@ markdown <- function(path = NULL, ..., depth = 0L, index = NULL) {
   rmarkdown::pandoc_convert(
     input = path,
     output = tmp,
-    from = "markdown_github-hard_line_breaks",
+#    from = "markdown_github-hard_line_breaks",
+    from = "gfm",
     to = "html",
     options = list(
       "-t",
