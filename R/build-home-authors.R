@@ -71,6 +71,10 @@ data_author_info <- function(pkg = ".") {
     "Yi Shang" = list(
       href = "https://github.com/shangy",
       html = "<img src='https://avatars0.githubusercontent.com/u/1530616' height='20' />"
+    ),
+    "Allie Cooperman" = list(
+      href = "https://github.com/alliecooperman",
+      html = "<img src='https://avatars.githubusercontent.com/u/82226809?v=4' height='20' />"
     )
   )
 
