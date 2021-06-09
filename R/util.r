@@ -34,7 +34,6 @@ markdown <- function(path = NULL, ..., depth = 0L, index = NULL) {
   rmarkdown::pandoc_convert(
     input = path,
     output = tmp,
-#    from = "markdown_github-hard_line_breaks",
     from = "gfm",
     to = "html",
     options = list(
@@ -78,18 +77,30 @@ tweak_anchors <- function(html, only_contents = TRUE) {
     gsub(".", "-", ., fixed = TRUE)
   purrr::walk2(sections, anchor, ~ (xml2::xml_attr(.x, "id") <- .y))
 
+  # Update href of toc anchors , use "-" instead "."
+  toc_nav <- xml2::xml_find_all(html, ".//div[@id='tocnav']//a")
+  hrefs <- toc_nav %>%
+      xml2::xml_attr("href") %>%
+      gsub(".", "-", ., fixed = TRUE)
+  purrr::walk2(toc_nav, hrefs, ~ (xml2::xml_attr(.x, "href") <- .y))
+
   headings <- xml2::xml_find_first(sections, ".//h1|h2|h3|h4|h5")
   has_heading <- !is.na(xml2::xml_name(headings))
 
   for (i in seq_along(headings)[has_heading]) {
     # Insert anchor in first element of header
     heading <- headings[[i]]
+    if (length(xml2::xml_contents(heading)) == 0) {
+       # skip empty headings
+       next
+   }
 
     xml2::xml_attr(heading, "class") <- "hasAnchor"
     xml2::xml_add_sibling(
       xml2::xml_contents(heading)[[1]],
       "a", href = paste0("#", anchor[[i]]),
       class = "anchor",
+      `aria-hidden`="true",
       .where = "before"
     )
   }

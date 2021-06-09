@@ -54,23 +54,27 @@ data_author_info <- function(pkg = ".") {
   defaults <- list(
     "Damian W. Betebenner" = list(
       href = "https://github.com/dbetebenner",
-      html = "<img src='https://centerforassessment.github.io/assets/dbetebenner.png' height='20' />"
+      html = "<img class='img-author' src='https://centerforassessment.github.io/assets/dbetebenner.png' height='20' />"
     ),
     "Adam R. Van Iwaarden" = list(
       href = "https://github.com/adamvi",
-      html = "<img src='https://centerforassessment.github.io/assets/adamvi.png' height='20' />"
+      html = "<img class='img-author' src='https://centerforassessment.github.io/assets/adamvi.png' height='20' />"
     ),
     "Nathan Dadey" = list(
       href = "https://github.com/ndadey",
-      html = "<img src='https://avatars0.githubusercontent.com/u/17909944' height='20' />"
+      html = "<img class='img-author' src='https://avatars0.githubusercontent.com/u/17909944' height='20' />"
     ),
     "Ben Domingue" = list(
       href = "https://github.com/ben-domingue",
-      html = "<img src='https://avatars2.githubusercontent.com/u/1353244' height='20' />"
+      html = "<img class='img-author' src='https://avatars2.githubusercontent.com/u/1353244' height='20' />"
     ),
     "Yi Shang" = list(
       href = "https://github.com/shangy",
-      html = "<img src='https://avatars0.githubusercontent.com/u/1530616' height='20' />"
+      html = "<img class='img-author' src='https://avatars0.githubusercontent.com/u/1530616' height='20' />"
+    ),
+    "Allie Cooperman" = list(
+      href = "https://github.com/alliecooperman",
+      html = "<img class='img-author' src='https://avatars.githubusercontent.com/u/82226809?v=4' height='20' />"
     )
   )
 
